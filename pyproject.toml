@@ -1,0 +1,56 @@
+[project]
+name = "pose-rendering"
+description = "Render sign language poses into videos"
+version = "0.0.1"
+authors = [
+    { name = "Amit Moryossef", email = "amitmoryossef@gmail.com" }
+]
+readme = "README.md"
+dependencies = [
+    "numpy",
+    "opencv-python",
+    "pose-format",
+    "tqdm"
+]
+
+[tool.poetry.extras]
+pix2pix = []
+stylegan3 = []
+mixamo = []
+simple-upscaler = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pylint"
+]
+
+[tool.yapf]
+based_on_style = "google"
+column_limit = 120
+
+[tool.pylint]
+max-line-length = 120
+disable = [
+    "C0114", # Missing module docstring
+    "C0116", # Missing function or method docstring
+]
+
+[tool.pylint.typecheck]
+generated-members = ["cv2.*"]
+
+
+[tool.setuptools]
+packages = [
+    "pose_to_video"
+]
+
+[tool.setuptools.package-data]
+pose_to_video = ["upscalers/upscaler/dist/*.h5"]
+
+[tool.pytest.ini_options]
+addopts = "-v"
+testpaths = ["pose_to_video"]
+
+[project.scripts]
+pose_to_video = "pose_to_video:main"

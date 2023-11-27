@@ -1,0 +1,4 @@
+training-runs/
+datasets/
+!datasets/.gitkeep
+animations

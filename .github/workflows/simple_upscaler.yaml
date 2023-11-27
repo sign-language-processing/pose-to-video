@@ -1,0 +1,29 @@
+name: Simple Upscaler
+
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+    paths:
+      - '.github/workflows/simple_upscaler.yml'
+      - 'pose_to_video/upscalers/simple/**'
+
+
+jobs:
+  test:
+    name: simple-upscaler
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Requirements
+        run: pip install .[simple-upscaler]
+
+      - name: Run tests
+        run: pytest pose_to_video/upscalers/simple
