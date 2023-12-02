@@ -1,5 +1,5 @@
 [project]
-name = "pose-rendering"
+name = "pose-to-video"
 description = "Render sign language poses into videos"
 version = "0.0.1"
 authors = [
@@ -13,17 +13,18 @@ dependencies = [
     "tqdm"
 ]
 
-[tool.poetry.extras]
-pix2pix = []
-stylegan3 = []
-mixamo = []
-simple-upscaler = []
-
 [project.optional-dependencies]
 dev = [
     "pytest",
     "pylint"
 ]
+
+[tool.poetry.extras]
+pix2pix = ["tensorflow"]
+stylegan3 = []
+mixamo = []
+upscaler = ["tesnorflow"]
+
 
 [tool.yapf]
 based_on_style = "google"
@@ -53,4 +54,4 @@ addopts = "-v"
 testpaths = ["pose_to_video"]
 
 [project.scripts]
-pose_to_video = "pose_to_video:main"
+pose_to_video = "pose_to_video.bin:main"

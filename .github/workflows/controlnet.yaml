@@ -1,4 +1,4 @@
-name: Simple Upscaler
+name: ControlNet
 
 
 on:
@@ -7,13 +7,13 @@ on:
   pull_request:
     branches: [ master, main ]
     paths:
-      - '.github/workflows/simple_upscaler.yml'
-      - 'pose_to_video/upscalers/simple/**'
+      - '.github/workflows/controlnet.yml'
+      - 'pose_to_video/conditional/controlnet/**'
 
 
 jobs:
   test:
-    name: simple-upscaler
+    name: controlnet
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +23,7 @@ jobs:
           python-version: '3.10'
 
       - name: Install Requirements
-        run: pip install .[simple-upscaler][dev]
+        run: pip install .[controlnet][dev]
 
       - name: Run tests
-        run: pytest pose_to_video/upscalers/simple
+        run: pytest pose_to_video/conditional/pix2pix

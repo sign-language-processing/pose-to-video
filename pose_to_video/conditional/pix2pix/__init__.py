@@ -3,7 +3,6 @@ import os
 import cv2
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.models import load_model
 from pose_format import Pose
 from pose_format.pose_visualizer import PoseVisualizer
 
@@ -35,6 +34,8 @@ def translate_image(model, image):
 
 
 def pose_to_video(pose: Pose, model_path: str) -> iter:
+    from tensorflow.keras.models import load_model
+
     model = load_model(model_path)
 
     # Scale pose to 256x256
