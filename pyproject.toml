@@ -10,7 +10,8 @@ dependencies = [
     "numpy",
     "opencv-python",
     "pose-format",
-    "tqdm"
+    "tqdm",
+    "mediapipe"
 ]
 
 [project.optional-dependencies]
@@ -21,6 +22,7 @@ dev = [
 
 [tool.poetry.extras]
 pix2pix = ["tensorflow"]
+controlnet = ["diffusers", "accelerate", "xformers"]
 stylegan3 = []
 mixamo = []
 upscaler = ["tesnorflow"]

@@ -14,6 +14,12 @@ pip install .[pix2pix][upscaler]
 pose_to_video --type=pix2pix --model=pix_to_pix/training/model.h5 --pose=assets/testing-reduced.pose --video=sign.mp4 --upscale
 ```
 
+Using controlnet:
+```bash
+pip install .[controlnet]
+pose_to_video --type=controlnet --model=sign/sd-controlnet-mediapipe --pose=assets/testing-reduced.pose --video=sign.mp4
+```
+
 ## Implementations
 
 This repository includes multiple implementations.
@@ -21,7 +27,7 @@ This repository includes multiple implementations.
 ### Conditional Implementation
 
 - [pix_to_pix](pose_to_video/conditional/pix_to_pix) - Pix2Pix model for video generation
-- [controlnet](pose_to_video/conditional/controlnet) - Pix2Pix model for video generation
+- [controlnet](pose_to_video/conditional/controlnet) - ControlNet model for video generation
 
 ### Unconditional Implementation (Controlled)
 

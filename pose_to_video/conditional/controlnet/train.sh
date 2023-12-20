@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --job-name=train-controlnet-hf
-#SBATCH --time=72:00:00
+#SBATCH --time=168:00:00
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=16GB
 #SBATCH --output=controlnet-job.out
@@ -41,7 +41,7 @@ python ../../../data/BIU-MG/video_to_images.py \
     --resolution=512
 
 # Install dependencies
-pip install diffusers transformers accelerate xformers wandb datasets argparse torchvision
+pip install diffusers transformers accelerate xformers wandb datasets argparse torchvision huggingface-hub
 huggingface-cli login --token $HUGGINGFACE_TOKEN
 
 # Convert to huggingface dataset
@@ -82,9 +82,9 @@ mkdir -p $OUTPUT_DIR
  --resolution=512 \
  --learning_rate=1e-5 \
  --validation_image "./validation/landmarks1.png" "./validation/landmarks2.png" "./validation/landmarks3.png" \
- --validation_prompt "Maayan Gazuli performing sign language in front of a green screen." "Maayan Gazuli performing sign language in front of a green screen." "Man performing sign language in front of a green screen." \
+ --validation_prompt "Maayan Gazuli performing sign language in front of a green screen." "Maayan Gazuli performing sign language in front of a green screen." "Barack Obama performing sign language in front of a green screen." \
  --train_batch_size=4 \
- --num_train_epochs=100 \
+ --num_train_epochs=20 \
  --tracker_project_name="sd-controlnet-mediapipe" \
  --hub_model_id="sign/sd-controlnet-mediapipe" \
  --enable_xformers_memory_efficient_attention \
@@ -98,7 +98,7 @@ mkdir -p $OUTPUT_DIR
 
 
 # sbatch train.sh
-# srun --pty -n 1 -c 2 --time=01:00:00 --gres=gpu:1 --constraint=GPUMEM80GB --mem=128G bash -l
+# srun --pty -n 1 -c 2 --time=01:00:00 --gres=gpu:1 --constraint=GPUMEM80GB --mem=32G bash -l
 # srun --pty -n 1 -c 2 --time=02:00:00 --mem=32G bash -l
 # conda activate diffusers
 # cd /home/amoryo/sign-language/pose-to-video/pose_to_video/conditional/controlnet
