@@ -36,6 +36,7 @@ column_limit = 120
 max-line-length = 120
 disable = [
     "C0114", # Missing module docstring
+    "C0115", # Missing class docstring
     "C0116", # Missing function or method docstring
 ]
 
@@ -45,7 +46,15 @@ generated-members = ["cv2.*"]
 
 [tool.setuptools]
 packages = [
-    "pose_to_video"
+    "pose_to_video",
+    "pose_to_video.conditional",
+    "pose_to_video.conditional.controlnet",
+    "pose_to_video.conditional.pix2pix",
+    "pose_to_video.unconditional",
+    "pose_to_video.unconditional.stylegan3",
+    "pose_to_video.unconditional.mixamo",
+    "pose_to_video.upscalers",
+    "pose_to_video.upscalers.simple",
 ]
 
 [tool.setuptools.package-data]
