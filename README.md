@@ -5,18 +5,18 @@
 To animate a `.pose` file into a video, run
 
 ```bash
-pip install .[pix2pix]
+pip install '.[pix2pix]'
 pose_to_video --type=pix2pix --model=pix_to_pix/training/model.h5 --pose=assets/testing-reduced.pose --video=sign.mp4
 ```
 Or including upscaling
 ```bash
-pip install .[pix2pix][upscaler]
+pip install '.[pix2pix,upscaler]'
 pose_to_video --type=pix2pix --model=pix_to_pix/training/model.h5 --pose=assets/testing-reduced.pose --video=sign.mp4 --upscale
 ```
 
 Using controlnet:
 ```bash
-pip install .[controlnet]
+pip install '.[controlnet]'
 pose_to_video --type=controlnet --model=sign/sd-controlnet-mediapipe --pose=assets/testing-reduced.pose --video=sign.mp4
 ```
 

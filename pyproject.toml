@@ -25,7 +25,7 @@ pix2pix = ["tensorflow"]
 controlnet = ["diffusers", "accelerate", "xformers"]
 stylegan3 = []
 mixamo = []
-upscaler = ["tesnorflow"]
+upscaler = ["tensorflow"]
 
 
 [tool.yapf]
