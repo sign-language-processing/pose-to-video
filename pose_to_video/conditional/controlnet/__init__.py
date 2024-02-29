@@ -7,17 +7,7 @@ from itertools import islice, chain
 import torch
 from PIL import Image
 
-
-def batched(iterable, n):
-    "Batch data into lists of length n. The last batch may be shorter."
-    # TODO: remove when using python 3.12, batched comes with itertools
-    # batched('ABCDEFG', 3) --> ABC DEF G
-    it = iter(iterable)
-    while True:
-        batch = list(islice(it, n))
-        if not batch:
-            return
-        yield batch
+from pose_to_video.utils import batched
 
 
 def get_pipeline(model_name: str):

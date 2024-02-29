@@ -4,8 +4,8 @@ import argparse
 import importlib
 
 import cv2
-from pose_format.utils.generic import pose_normalization_info, correct_wrists, reduce_holistic
 from pose_format.pose import Pose
+from pose_format.utils.generic import correct_wrists, reduce_holistic
 from tqdm import tqdm
 
 
@@ -16,9 +16,17 @@ def get_args():
     parser.add_argument('--type', required=True, type=str, choices=['pix2pix', 'controlnet', 'mixamo', 'stylegan3'],
                         help='system to use')
     parser.add_argument('--model', required=True, type=str, help='model path to use')
-    parser.add_argument('--upscale', action='store_true', help='should the output be upscaled to 768x768')
+    parser.add_argument('--processors', nargs='+', default=[])
 
     return parser.parse_args()
+
+
+def resize_if_needed(frames, resolution):
+    for frame in frames:
+        if frame.shape[0] != resolution[0] or frame.shape[1] != resolution[1]:
+            yield cv2.resize(frame, resolution, interpolation=cv2.INTER_NEAREST)
+        else:
+            yield frame
 
 
 def main():
@@ -32,18 +40,24 @@ def main():
 
     print('Generating video ...')
     video = None
+    conditional_module_path = f"pose_to_video.conditional.{args.type}"
     try:
-        print(f"pose_to_video.conditional.{args.type}")
-        module = importlib.import_module(f"pose_to_video.conditional.{args.type}")
-    except ModuleNotFoundError:
+        module = importlib.import_module(conditional_module_path)
+    except ModuleNotFoundError as e:
+        if conditional_module_path not in str(e):
+            raise e
         module = importlib.import_module(f"pose_to_video.unconditional.{args.type}")
 
     pose_to_video = module.pose_to_video
     frames: iter = pose_to_video(pose, args.model)
 
-    if args.upscale:
-        from pose_to_video.upscalers.simple import upscale
-        frames = upscale(frames)
+    for processor in args.processors:
+        print(f"pose_to_video.processors.{processor}")
+        module = importlib.import_module(f"pose_to_video.processors.{processor}")
+        process = module.process
+        if hasattr(module, 'INPUT_RESOLUTION'):
+            frames = resize_if_needed(frames, module.INPUT_RESOLUTION)
+        frames = process(frames)
 
     for frame in tqdm(frames):
         if video is None:

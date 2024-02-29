@@ -6,18 +6,29 @@ To animate a `.pose` file into a video, run
 
 ```bash
 pip install '.[pix2pix]'
-pose_to_video --type=pix2pix --model=pix_to_pix/training/model.h5 --pose=assets/testing-reduced.pose --video=sign.mp4
-```
-Or including upscaling
-```bash
-pip install '.[pix2pix,upscaler]'
-pose_to_video --type=pix2pix --model=pix_to_pix/training/model.h5 --pose=assets/testing-reduced.pose --video=sign.mp4 --upscale
+wget https://firebasestorage.googleapis.com/v0/b/sign-mt-assets/o/models%2Fgenerator%2Fmodel.h5?alt=media -O pix_to_pix.h5
+pose_to_video --type=pix2pix --model=pix_to_pix.h5 --pose=assets/testing-reduced.pose --video=assets/outputs/pix2pix.mp4
+# Or including upscaling
+pip install '.[pix2pix,simple_upscaler]'
+pose_to_video --type=pix2pix --model=pix_to_pix.h5 --pose=assets/testing-reduced.pose --video=assets/outputs/pix2pix-upscaled.mp4 --processors simple_upscaler
+# Or including AnimateDiff
+pip install '.[pix2pix,animatediff]'
+pose_to_video --type=pix2pix --model=pix_to_pix.h5 --pose=assets/testing-reduced.pose --video=assets/outputs/pix2pix-animatediff.mp4 --processors animatediff
+# Or including both!
+pip install '.[pix2pix,simple_upscaler,animatediff]'
+pose_to_video --type=pix2pix --model=pix_to_pix.h5 --pose=assets/testing-reduced.pose --video=assets/outputs/pix2pix-upscaled-animatediff.mp4 --processors simple_upscaler animatediff simple_upscaler
 ```
 
-Using controlnet:
+Using ControlNet:
 ```bash
 pip install '.[controlnet]'
-pose_to_video --type=controlnet --model=sign/sd-controlnet-mediapipe --pose=assets/testing-reduced.pose --video=sign.mp4
+pose_to_video --type=controlnet --model=sign/sd-controlnet-mediapipe --pose=assets/testing-reduced.pose --video=assets/outputs/controlnet.mp4
+# Or including AnimateDiff (Requiring more VRAM):
+pip install '.[controlnet,animatediff]'
+pose_to_video --type=controlnet --model=sign/sd-controlnet-mediapipe --pose=assets/testing-reduced.pose --video=assets/outputs/controlnet-animatediff.mp4 --processors animatediff
+# Or also upscaling
+pip install '.[controlnet,animatediff,simple_upscaler]'
+pose_to_video --type=controlnet --model=sign/sd-controlnet-mediapipe --pose=assets/testing-reduced.pose --video=assets/outputs/controlnet-animatediff-upscaled.mp4 --processors animatediff simple_upscaler
 ```
 
 ## Implementations
@@ -34,9 +45,10 @@ This repository includes multiple implementations.
 - [stylegan3](pose_to_video/unconditional/stylegan3) - StyleGAN3 model for video generation
 - [mixamo](pose_to_video/unconditional/mixamo) - Mixamo 3D avatar
 
-### Upscalers
+### Post-processors
 
-- [simple-upscaler](pose_to_video/upscalers/simple) - Upscales 256x256 frames to 768x768
+- [simple_upscaler](pose_to_video/processors/simple_upscaler) - Upscales 256x256 frames to 768x768
+- [animatediff](pose_to_video/processors/animatediff) - Uses AnimateDiff for better temporal coherence
 
 ## Datasets
 

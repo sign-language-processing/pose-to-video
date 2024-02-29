@@ -23,9 +23,10 @@ dev = [
 [tool.poetry.extras]
 pix2pix = ["tensorflow"]
 controlnet = ["diffusers", "accelerate", "xformers"]
+animatediff = ["diffusers"]
 stylegan3 = []
 mixamo = []
-upscaler = ["tensorflow"]
+simple_upscaler = ["tensorflow"]
 
 
 [tool.yapf]
@@ -53,12 +54,13 @@ packages = [
     "pose_to_video.unconditional",
     "pose_to_video.unconditional.stylegan3",
     "pose_to_video.unconditional.mixamo",
-    "pose_to_video.upscalers",
-    "pose_to_video.upscalers.simple",
+    "pose_to_video.processors",
+    "pose_to_video.processors.simple_upscaler",
+    "pose_to_video.processors.animatediff",
 ]
 
 [tool.setuptools.package-data]
-pose_to_video = ["upscalers/upscaler/dist/*.h5"]
+pose_to_video = ["**/*.h5"]
 
 [tool.pytest.ini_options]
 addopts = "-v"
