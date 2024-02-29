@@ -4,6 +4,10 @@ from typing import Iterable
 import numpy as np
 import tensorflow as tf
 
+from pose_to_video.utils import set_tensorflow_memory_growth
+
+INPUT_RESOLUTION = (256, 256)
+
 
 def upscale_frame(model, frame):
     # make frame into numpy if not already
@@ -23,7 +27,9 @@ def upscale_frame(model, frame):
     return (model_output * 255.0).astype('uint8')
 
 
-def upscale(frames: Iterable[np.ndarray]) -> Iterable[np.ndarray]:
+def process(frames: Iterable[np.ndarray]) -> Iterable[np.ndarray]:
+    set_tensorflow_memory_growth()
+
     # Load the model
     current_dir = os.path.dirname(os.path.realpath(__file__))
     model_path = os.path.join(current_dir, "dist", "model.h5")
