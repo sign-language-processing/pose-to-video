@@ -1,8 +1,8 @@
 import os
+import json
 
 import numpy as np
 from tensorflow.keras.models import load_model
-import json
 
 from model import get_model, INPUT_DIMENSION
 
@@ -22,9 +22,13 @@ new_model.save("model.h5")
 os.system("rm -r web_model")
 os.system("tensorflowjs_converter --input_format=keras model.h5 web_model")
 
-model_info = json.load(open("web_model/model.json", "r"))
+with open("web_model/model.json", "r", encoding="utf-8") as file:
+    model_info = json.load(file)
+
 model_info["modelTopology"]["model_config"]["config"]["layers"][0]["config"]["batch_input_shape"] = [1, 1, INPUT_DIMENSION]
 for layer in model_info["modelTopology"]["model_config"]["config"]["layers"]:
     if "stateful" in layer["config"]:
         layer["config"]["stateful"] = True
-json.dump(model_info, open("web_model/model.json", "w"))
+
+with open("web_model/model.json", "w", encoding="utf-8") as file:
+    json.dump(model_info, file)

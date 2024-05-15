@@ -47,7 +47,7 @@ class PredictAndSaveCallback(tf.keras.callbacks.Callback):
         self.animation_script = animation_script
         self.pose_estimation_script = pose_estimation_script
 
-    def on_epoch_end(self, epoch: int, logs=None):
+    def on_epoch_end(self, epoch: int):
         # Create the directory to save predictions for this epoch
         dir_path = os.path.join(self.experiment_directory, self.split, str(epoch))
         if not os.path.exists(dir_path):

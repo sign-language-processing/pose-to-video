@@ -45,7 +45,7 @@ def process_frames(pipeline: AnimateDiffVideoToVideoPipeline, frames: Iterable[n
 
     output = pipeline(
         video=frames,
-        prompt="white woman using sign language, green screen, black shirt, blue jeans. detailed, studio lighting, detailed iris, symmetrical circular eyes, natural color, dramatic highlights, light, shadow, relaxed, detailed skin, symmetrical ears and face shape, 90mm lens, by Martin Schoeller",
+        prompt="white woman using sign language, green screen, black shirt, blue jeans. detailed, studio lighting, blue eyes, detailed iris, symmetrical circular eyes, natural color, dramatic highlights, light, shadow, relaxed, detailed skin, symmetrical ears and face shape, 90mm lens, by Martin Schoeller",
         negative_prompt="bad quality, worse quality, disfigured, cartoon, painting, doll, blurry, grainy, black and white, broken, cross-eyed, undead, photoshopped, overexposed, underexposed, rash, sunburn, mutated, alien, unthinking, unfeeling, unrealistic, cramped, flexing, soft lens, hard light, wobbly iris, square iris, flat iris, edge of iris following, surreal, surrealist, fiction, Wax sculpture, caricature, frame, fish, Neanderthal, reptile, rings, jewelry, cataracts, dumb eyes, creepy, zombie",
         guidance_scale=7.5,
         num_inference_steps=25,

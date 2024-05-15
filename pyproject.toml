@@ -6,6 +6,7 @@ authors = [
     { name = "Amit Moryossef", email = "amitmoryossef@gmail.com" }
 ]
 readme = "README.md"
+requires-python = ">= 3.10"
 dependencies = [
     "numpy",
     "opencv-python",
@@ -39,10 +40,13 @@ disable = [
     "C0114", # Missing module docstring
     "C0115", # Missing class docstring
     "C0116", # Missing function or method docstring
+    "C0415", # Import outside toplevel
 ]
+good-names = ["i", "f", "x", "y"]
+
 
 [tool.pylint.typecheck]
-generated-members = ["cv2.*"]
+generated-members = ["cv2.*", "torch.*", "numpy.*", "tensorflow.*"]
 
 
 [tool.setuptools]

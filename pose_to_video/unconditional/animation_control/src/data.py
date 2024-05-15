@@ -72,7 +72,8 @@ class AnimationDataset(Dataset):
 
         pose_frames, pose_people, pose_points, pose_dims = data.shape
         animation_frames = len(animation)
-        assert animation_frames == pose_frames, f"Animation frames ({animation_frames}) must equal pose frames ({pose_frames})"
+        assert animation_frames == pose_frames, \
+            f"Animation frames ({animation_frames}) must equal pose frames ({pose_frames})"
 
         x = data.reshape((pose_frames, -1))
         y = animation.reshape((animation_frames, -1))

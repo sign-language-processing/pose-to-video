@@ -25,7 +25,10 @@ pip install '.[controlnet]'
 pose_to_video --type=controlnet --model=sign/sd-controlnet-mediapipe --pose=assets/testing-reduced.pose --video=assets/outputs/controlnet.mp4
 # Or including AnimateDiff (Requiring more VRAM):
 pip install '.[controlnet,animatediff]'
-pose_to_video --type=controlnet --model=sign/sd-controlnet-mediapipe --pose=assets/testing-reduced.pose --video=assets/outputs/controlnet-animatediff.mp4 --processors animatediff
+pose_to_video --type=controlnet --model=sign/sd-controlnet-mediapipe --pose=original.pose --video=original-cn.mp4
+pose_to_video --type=controlnet --model=sign/sd-controlnet-mediapipe --pose=maayan.pose --video=maayan-cn.mp4
+pose_to_video --type=controlnet --model=sign/sd-controlnet-mediapipe --pose=maayan.pose --video=maayan-cnad.mp4 --processors animatediff
+pose_to_video --type=controlnet --model=sign/sd-controlnet-mediapipe --pose=original.pose --video=original-cnad.mp4 --processors animatediff
 # Or also upscaling
 pip install '.[controlnet,animatediff,simple_upscaler]'
 pose_to_video --type=controlnet --model=sign/sd-controlnet-mediapipe --pose=assets/testing-reduced.pose --video=assets/outputs/controlnet-animatediff-upscaled.mp4 --processors animatediff simple_upscaler

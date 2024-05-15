@@ -76,4 +76,5 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # python -m pose_to_video.bin --type=controlnet --model=sign/sd-controlnet-mediapipe --pose=assets/testing-reduced.pose --video=sign.mp4
+    # python -m pose_to_video.bin --type=controlnet --model=sign/sd-controlnet-mediapipe \
+    # --pose=assets/testing-reduced.pose --video=sign.mp4
