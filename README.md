@@ -1,5 +1,12 @@
 # Pose-to-Video
 
+## Examples
+
+|            | Original                                           | Upscaled                                                 | AnimateDiff                                                    | AnimateDiff + Upscaled                                                        |
+|------------|----------------------------------------------------|----------------------------------------------------------|----------------------------------------------------------------|-------------------------------------------------------------------------------|
+| Pix2Pix    | 256x256 ![Original](assets/outputs/pix2pix.gif)    | 768x768 ![Upscaled](assets/outputs/pix2pix-upscaled.gif) | 512x512 ![AnimateDiff](assets/outputs/pix2pix-animatediff.gif) | 768x768 ![Upscaled + AnimateDiff](assets/outputs/pix2pix-upscaled-animatediff.gif)    |
+| ControlNet | 512x512 ![Original](assets/outputs/controlnet.gif) | n/a                                                      | 512x512 ![AnimateDiff](assets/outputs/controlnet-animatediff.gif)      | 768x768 ![Upscaled + AnimateDiff](assets/outputs/controlnet-animatediff-upscaled.gif) |
+
 ## Usage
 
 To animate a `.pose` file into a video, run
@@ -20,6 +27,7 @@ pose_to_video --type=pix2pix --model=pix_to_pix.h5 --pose=assets/testing-reduced
 ```
 
 Using ControlNet:
+
 ```bash
 pip install '.[controlnet]'
 pose_to_video --type=controlnet --model=sign/sd-controlnet-mediapipe --pose=assets/testing-reduced.pose --video=assets/outputs/controlnet.mp4
