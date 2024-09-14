@@ -13,8 +13,8 @@ def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--pose', required=True, type=str, help='path to input pose file')
     parser.add_argument('--video', required=True, type=str, help='path to output video file')
-    parser.add_argument('--type', required=True, type=str, choices=['pix2pix', 'controlnet', 'mixamo', 'stylegan3'],
-                        help='system to use')
+    parser.add_argument('--type', required=True, type=str,
+                        choices=['pix2pix', 'controlnet', 'mixamo', 'stylegan3'], help='system to use')
     parser.add_argument('--model', required=True, type=str, help='model path to use')
     parser.add_argument('--processors', nargs='+', default=[])
 
@@ -28,6 +28,31 @@ def resize_if_needed(frames, resolution):
         else:
             yield frame
 
+def pose_to_frames(pose: Pose, model_type: str, model_path: str, processors: list) -> iter:
+    pose = reduce_holistic(pose)
+    correct_wrists(pose)
+
+    print('Generating video ...')
+    conditional_module_path = f"pose_to_video.conditional.{model_type}"
+    try:
+        module = importlib.import_module(conditional_module_path)
+    except ModuleNotFoundError as e:
+        if conditional_module_path not in str(e):
+            raise e
+        module = importlib.import_module(f"pose_to_video.unconditional.{model_type}")
+
+    pose_to_video = module.pose_to_video
+    frames: iter = pose_to_video(pose, model_path)
+
+    for processor in processors:
+        print(f"pose_to_video.processors.{processor}")
+        module = importlib.import_module(f"pose_to_video.processors.{processor}")
+        process = module.process
+        if hasattr(module, 'INPUT_RESOLUTION'):
+            frames = resize_if_needed(frames, module.INPUT_RESOLUTION)
+        frames = process(frames)
+
+    return frames
 
 def main():
     args = get_args()
@@ -35,29 +60,13 @@ def main():
     print('Loading input pose ...')
     with open(args.pose, 'rb') as pose_file:
         pose = Pose.read(pose_file.read())
-        pose = reduce_holistic(pose)
-        correct_wrists(pose)
 
-    print('Generating video ...')
+    frames = pose_to_frames(pose,
+                            model_type=args.type,
+                            model_path=args.model,
+                            processors=args.processors)
+
     video = None
-    conditional_module_path = f"pose_to_video.conditional.{args.type}"
-    try:
-        module = importlib.import_module(conditional_module_path)
-    except ModuleNotFoundError as e:
-        if conditional_module_path not in str(e):
-            raise e
-        module = importlib.import_module(f"pose_to_video.unconditional.{args.type}")
-
-    pose_to_video = module.pose_to_video
-    frames: iter = pose_to_video(pose, args.model)
-
-    for processor in args.processors:
-        print(f"pose_to_video.processors.{processor}")
-        module = importlib.import_module(f"pose_to_video.processors.{processor}")
-        process = module.process
-        if hasattr(module, 'INPUT_RESOLUTION'):
-            frames = resize_if_needed(frames, module.INPUT_RESOLUTION)
-        frames = process(frames)
 
     for frame in tqdm(frames):
         if video is None:

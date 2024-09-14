@@ -13,7 +13,7 @@ To animate a `.pose` file into a video, run
 
 ```bash
 pip install '.[pix2pix]'
-wget https://firebasestorage.googleapis.com/v0/b/sign-mt-assets/o/models%2Fgenerator%2Fmodel.h5?alt=media -O pix_to_pix.h5
+wget "https://firebasestorage.googleapis.com/v0/b/sign-mt-assets/o/models%2Fgenerator%2Fmodel.h5?alt=media" -O pix_to_pix.h5
 pose_to_video --type=pix2pix --model=pix_to_pix.h5 --pose=assets/testing-reduced.pose --video=assets/outputs/pix2pix.mp4
 # Or including upscaling
 pip install '.[pix2pix,simple_upscaler]'
@@ -40,6 +40,20 @@ pose_to_video --type=controlnet --model=sign/sd-controlnet-mediapipe --pose=orig
 # Or also upscaling
 pip install '.[controlnet,animatediff,simple_upscaler]'
 pose_to_video --type=controlnet --model=sign/sd-controlnet-mediapipe --pose=assets/testing-reduced.pose --video=assets/outputs/controlnet-animatediff-upscaled.mp4 --processors animatediff simple_upscaler
+```
+
+```bash
+srun --pty -n 1 -c 1 --time=00:30:00 --gres=gpu:1 --constraint=GPUMEM80GB --mem=16G bash -l
+cd sign-language/pose-to-video/tmp
+conda activate diffusers
+pose_to_video --type=controlnet --model=sign/sd-controlnet-mediapipe --pose=original.pose --video=original-cn.mp4 --processors animatediff
+pose_to_video --type=controlnet --model=sign/sd-controlnet-mediapipe --pose=interpreter.pose --video=interpreter-cn.mp4 --processors animatediff
+
+ffmpeg -i interpreter-cn.mp4 -vf "select=eq(n\,25),crop=200:200:156:20" -vsync vfr -frames:v 1 interpreter-cn.png -y
+ffmpeg -i original-cn.mp4 -vf "select=eq(n\,25),crop=200:200:156:20" -vsync vfr -frames:v 1 original-cn.png -y
+ffmpeg -i original.mp4 -vf "select=eq(n\,25),crop=300:300:234:30" -vsync vfr -frames:v 1 original.png -y
+ffmpeg -i interpreter.mp4 -vf "select=eq(n\,25),crop=300:300:234:30" -vsync vfr -frames:v 1 interpreter.png -y
+
 ```
 
 ## Implementations
