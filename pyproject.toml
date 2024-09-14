@@ -22,12 +22,12 @@ dev = [
 ]
 
 [tool.poetry.extras]
-pix2pix = ["tensorflow"]
+pix2pix = ["tensorflow<=2.15.0"]
 controlnet = ["diffusers", "accelerate", "xformers"]
 animatediff = ["diffusers"]
 stylegan3 = []
 mixamo = []
-simple_upscaler = ["tensorflow"]
+simple_upscaler = ["tensorflow<=2.15.0"]
 
 
 [tool.yapf]
