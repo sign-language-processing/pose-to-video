@@ -19,15 +19,7 @@ ffmpeg -i CAM3_output.mp4 -qscale 0 CAM3_norm.mp4
 
 ## Download
 
-Download the data from [here](https://nlp.biu.ac.il/~amit/datasets/GreenScreen/).
-
-Or use the command line:
-
-```bash
-wget --no-clobber --convert-links --random-wait \
-    -r -p --level 3 -E -e robots=off --adjust-extension -U mozilla \
-    "https://nlp.biu.ac.il/~amit/datasets/GreenScreen/"
-```
+Download [video](https://sign-lanugage-datasets.sign-mt.cloud/public/mp4/Maayan_1/CAM3_norm.mp4) and [pose](https://sign-lanugage-datasets.sign-mt.cloud/public/mp4/Maayan_1/CAM3.holistic.pose) data.
 
 ## Data Processing
 
