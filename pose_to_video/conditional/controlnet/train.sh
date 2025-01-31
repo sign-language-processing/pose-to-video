@@ -20,12 +20,11 @@ module load anaconda3
 source activate diffusers
 
 # Download the data
-DATA_DIR="/data/$(whoami)"
-[ ! -f "$DATA_DIR/GreenScreen/mp4/Maayan_1/CAM3_norm.mp4" ] && \
-wget --no-clobber --convert-links --random-wait \
-    -r -p --level 3 -E -e robots=off --adjust-extension -U mozilla \
-    "https://nlp.biu.ac.il/~amit/datasets/GreenScreen/" \
-    -P "$DATA_DIR"
+DATA_DIR="/data/$(whoami)/GreenScreen"
+[ ! -f "$DATA_DIR/video.mp4" ] && \
+wget -O "$DATA_DIR/video.mp4" https://sign-lanugage-datasets.sign-mt.cloud/public/mp4/Maayan_1/CAM3_norm.mp4
+[ ! -f "$DATA_DIR/video.pose" ] && \
+wget -O "$DATA_DIR/video.pose" https://sign-lanugage-datasets.sign-mt.cloud/public/mp4/Maayan_1/CAM3.holistic.pose
 
 # Process the data
 PROCESSED_DATA_DIR="/scratch/$(whoami)/GreenScreen"
@@ -34,8 +33,8 @@ mkdir -p $PROCESSED_DATA_DIR
 [ ! -f "$PROCESSED_DATA_DIR/frames512.zip" ] && \
 pip install pose-format mediapipe && \
 python ../../../data/BIU-MG/video_to_images.py \
-    --input_video="$DATA_DIR/GreenScreen/mp4/Maayan_1/CAM3_norm.mp4" \
-    --input_pose="$DATA_DIR/GreenScreen/mp4/Maayan_1/CAM3.holistic.pose" \
+    --input_video="$DATA_DIR/video.mp4" \
+    --input_pose="$DATA_DIR/video.pose" \
     --output_path="$PROCESSED_DATA_DIR/frames512.zip" \
     --pose_output_path="$PROCESSED_DATA_DIR/poses512.zip" \
     --resolution=512
